@@ -61,11 +61,11 @@
 
                     <span>Popular:</span>
 
-                    <a href="#services" data-search="Plumbing">Plumbing</a>
+                    <a href="#services" data-search="Plumbing">Cleaning</a>
 
-                    <a href="#services" data-search="Cleaning">Cleaning</a>
+                    <a href="#services" data-search="Cleaning">Tutor</a>
 
-                    <a href="#services" data-search="Electrician">Electrician</a>
+                    <a href="#services" data-search="Electrician">  House for Rent</a>
 
                     <a href="#services" data-search="AC Repair">AC Repair</a>
 
@@ -185,6 +185,8 @@
 
 
 <!-- BROWSE BY CATEGORIES -->
+
+<!-- BROWSE BY CATEGORIES -->
 <section class="categories-section" id="services">
 
     <div class="container">
@@ -199,227 +201,88 @@
 
         <div class="row g-3">
 
-            <!-- 1. HOME SERVICES -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                        <!-- 1. Home Services -->
-                         <img src="/servora/public/assets/images/home-services.jpg"alt="Home Services" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Home Services</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Electricians</a>
-                            <a href="#">Plumbers</a>
-                            <a href="#">AC Repair</a>
-                            <a href="#">Carpenters</a>
-                            <a href="#">Painters</a>
-                            <a href="#">Pest Control</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=home-services" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <?php
+            // Category images
+            $categoryImages = [
+                'Home Services' => 'home-services.jpg',
+                'Property Sell / Rent' => 'property.jpg',
+                'Education & Training' => 'education.jpg',
+                'Health & Wellness' => 'health-wellness.jpg',
+                'Events & Celebrations' => 'events.jpg',
+                'Automobiles' => 'automobiles.jpg',
+                'Professional Services' => 'professional-services.jpg',
+                'Daily Help & Labour' => 'daily-help.jpg',
+                'Food & Catering' => 'food-catering.jpg'
+            ];
+            ?>
 
-            <!-- 2. PROPERTY -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                        <img src="/servora/public/assets/images/property.jpg"alt="Property Sell and Rent" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Property Sell / Rent</h4>
-                        <div class="subcategory-list">
-                            <a href="#">House Sale</a>
-                            <a href="#">House Rent</a>
-                            <a href="#">Flats & Apartments</a>
-                            <a href="#">Commercial Spaces</a>
-                            <a href="#">Land & Plots</a>
-                            <a href="#">Property Agents</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=property" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <?php foreach ($categories as $category): ?>
 
-            <!-- 3. EDUCATION -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                        <img src="/servora/public/assets/images/education.jpg"
-     alt="Education and Training" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Education & Training</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Tuition Teachers</a>
-                            <a href="#">Software Training</a>
-                            <a href="#">Spoken English</a>
-                            <a href="#">Competitive Exams</a>
-                            <a href="#">Skill Development</a>
-                            <a href="#">Music & Dance</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=education" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                <?php
+                $categoryName = $category['name'];
+                $categorySlug = $category['slug'];
 
-            <!-- 4. HEALTH -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                        <img src="/servora/public/assets/images/health-wellness.jpg"
-     alt="Health and Wellness" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Health & Wellness</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Doctors</a>
-                            <a href="#">Physiotherapists</a>
-                            <a href="#">Yoga Trainers</a>
-                            <a href="#">Nutritionists</a>
-                            <a href="#">Fitness Coaches</a>
-                            <a href="#">Home Nursing</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=health" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                $imageName = $categoryImages[$categoryName]
+                    ?? 'home-services.jpg';
 
-            <!-- 5. EVENTS -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                        <img src="/servora/public/assets/images/events.jpg"
-     alt="Events and Celebrations" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Events & Celebrations</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Wedding Planners</a>
-                            <a href="#">Photographers</a>
-                            <a href="#">Caterers</a>
-                            <a href="#">Decorators</a>
-                            <a href="#">DJs & Music</a>
-                            <a href="#">Event Venues</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=events" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                $categoryUrl = APP_URL . '/services?category='
+                    . urlencode($categorySlug);
+                ?>
 
-            <!-- 6. AUTOMOBILES -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                       <img src="/servora/public/assets/images/automobiles.jpg"
-     alt="Automobiles" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Automobiles</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Car Repair</a>
-                            <a href="#">Bike Repair</a>
-                            <a href="#">Car Wash</a>
-                            <a href="#">Car Rentals</a>
-                            <a href="#">Driving Schools</a>
-                            <a href="#">Vehicle Towing</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=automobiles" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+                <div class="col-xl-3 col-lg-4 col-md-6">
 
-            <!-- 7. PROFESSIONAL SERVICES -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                        <img src="/servora/public/assets/images/professional-services.jpg"
-     alt="Professional Services" loading="lazy" decoding="async">
+                    <div class="category-directory-card">
+
+                        <div class="category-image">
+
+                            <img
+                                src="<?= APP_URL ?>/assets/images/<?= htmlspecialchars($imageName) ?>"
+                                alt="<?= htmlspecialchars($categoryName) ?>"
+                                loading="lazy"
+                                decoding="async"
+                            >
+
+                        </div>
+
+                        <div class="category-details">
+
+                            <h4>
+                                <?= htmlspecialchars($categoryName) ?>
+                            </h4>
+
+                            <div class="subcategory-list">
+
+                                <?php foreach ($category['subcategories'] as $subcategory): ?>
+
+                                    <span>
+                                        <?= htmlspecialchars($subcategory['name']) ?>
+                                    </span>
+
+                                <?php endforeach; ?>
+
+                            </div>
+
+                            <a
+                                href="<?= htmlspecialchars($categoryUrl) ?>"
+                                class="category-arrow"
+                                aria-label="Explore <?= htmlspecialchars($categoryName) ?>"
+                            >
+                                <i class="bi bi-arrow-right"></i>
+                            </a>
+
+                        </div>
 
                     </div>
-                    <div class="category-details">
-                        <h4>Professional Services</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Chartered Accountants</a>
-                            <a href="#">Lawyers</a>
-                            <a href="#">Graphic Designers</a>
-                            <a href="#">Web Developers</a>
-                            <a href="#">Consultants</a>
-                            <a href="#">Digital Marketing</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=professional" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
 
-            <!-- 8. DAILY HELP -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                       <img src="/servora/public/assets/images/daily-help.jpg"
-     alt="Daily Help and Labour" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Daily Help & Labour</h4>
-                        <div class="subcategory-list">
-                            <a href="#">House Maids</a>
-                            <a href="#">Cook Services</a>
-                            <a href="#">Babysitters</a>
-                            <a href="#">Elderly Care</a>
-                            <a href="#">Gardeners</a>
-                            <a href="#">General Labour</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=daily-help" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
                 </div>
-            </div>
 
-            <!-- 9. FOOD -->
-            <div class="col-xl-3 col-lg-4 col-md-6">
-                <div class="category-directory-card">
-                    <div class="category-image">
-                       <img src="/servora/public/assets/images/food-catering.jpg"alt="Food and Catering" loading="lazy" decoding="async">
-                    </div>
-                    <div class="category-details">
-                        <h4>Food & Catering</h4>
-                        <div class="subcategory-list">
-                            <a href="#">Home Chefs</a>
-                            <a href="#">Catering Services</a>
-                            <a href="#">Tiffin Services</a>
-                            <a href="#">Bakers</a>
-                            <a href="#">Party Food</a>
-                            <a href="#">Meal Preparation</a>
-                        </div>
-                        <a href="/servora/public/index.php?category=food" class="category-arrow">
-                            <i class="bi bi-arrow-right"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach; ?>
 
         </div>
 
     </div>
 
 </section>
-
 
 <!-- HOW SERVORA WORKS -->
 

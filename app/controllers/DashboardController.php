@@ -6,6 +6,7 @@ class DashboardController extends Controller
     // Display customer dashboard
    
 // Display customer dashboard
+
 public function index()
 {
     if (empty($_SESSION['user_id'])) {
@@ -41,178 +42,230 @@ public function index()
 
     $provider = $providerModel->findByUserId($user['id']);
 
+    // Load bookings belonging to this customer
+    $bookingModel = new Booking();
+
+    $bookings = $bookingModel->getBookingsByCustomer($user['id']);
+
+    // Display customer dashboard
     $this->view('dashboard.index', [
         'user' => $user,
-        'provider' => $provider
+        'provider' => $provider,
+        'bookings' => $bookings
     ]);
 }
 
-    // Display Become a Provider page
    
+// Display Become a Provider page
 public function becomeProvider()
 {
+    // Check login
     if (empty($_SESSION['user_id'])) {
-        header('Location: ' . APP_URL . '/login');
-        exit;
+        $this->redirect(APP_URL . '/login');
     }
 
+    // Get logged-in user
     $userModel = new User();
+
     $user = $userModel->findById($_SESSION['user_id']);
 
+    // Check whether user exists and is active
     if (!$user || $user['status'] !== 'active') {
-        header('Location: ' . APP_URL . '/login');
-        exit;
+        $this->redirect(APP_URL . '/login');
     }
 
+    // Admin cannot register as a provider
     if ($user['role'] === 'admin') {
-        header('Location: ' . APP_URL . '/admin/dashboard');
-        exit;
+        $this->redirect(APP_URL . '/admin/dashboard');
     }
 
+    // Check whether provider profile already exists
     $providerModel = new Provider();
+
     $existingProvider = $providerModel->findByUserId($user['id']);
 
     if ($existingProvider) {
-        header('Location: ' . APP_URL . '/dashboard');
-        exit;
+        $this->redirect(APP_URL . '/provider/dashboard');
     }
 
-    // Load main business categories
+    // Get main categories from database
     $categoryModel = new Category();
+
     $categories = $categoryModel->getMainCategories();
 
+    // Display Become a Provider form
     $this->view('provider.become', [
         'user' => $user,
         'categories' => $categories
     ]);
 }
 
-    // Handle provider registration
-    public function becomeProviderSubmit()
-    {
-        if (empty($_SESSION['user_id'])) {
-            $this->json([
-                'success' => false,
-                'message' => 'Please log in to continue.'
-            ], 401);
-        }
-
-        if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
-            $this->json([
-                'success' => false,
-                'message' => 'Invalid security token. Please refresh the page.'
-            ], 403);
-        }
-
-        $userModel = new User();
-
-        $user = $userModel->findById($_SESSION['user_id']);
-
-        if (!$user || $user['status'] !== 'active') {
-            $this->json([
-                'success' => false,
-                'message' => 'Your account is not available.'
-            ], 403);
-        }
-
-        if ($user['role'] === 'admin') {
-            $this->json([
-                'success' => false,
-                'message' => 'Admin accounts cannot register as providers.'
-            ], 403);
-        }
-
-        $businessName = trim($_POST['business_name'] ?? '');
-        $description = trim($_POST['description'] ?? '');
-        $address = trim($_POST['address'] ?? '');
-        $city = trim($_POST['city'] ?? '');
-        $state = trim($_POST['state'] ?? '');
-        $pincode = trim($_POST['pincode'] ?? '');
-
-        // Validate business name
-        if ($businessName === '' || strlen($businessName) > 150) {
-            $this->json([
-                'success' => false,
-                'message' => 'Please enter a business name of up to 150 characters.'
-            ], 422);
-        }
-
-        // Validate business description
-        if (strlen($description) < 30 || strlen($description) > 2000) {
-            $this->json([
-                'success' => false,
-                'message' => 'Description must contain between 30 and 2000 characters.'
-            ], 422);
-        }
-
-        // Validate address
-        if ($address === '' || strlen($address) > 255) {
-            $this->json([
-                'success' => false,
-                'message' => 'Please enter a valid business address.'
-            ], 422);
-        }
-
-        // Validate city
-        if ($city === '' || strlen($city) > 100) {
-            $this->json([
-                'success' => false,
-                'message' => 'Please enter a valid city.'
-            ], 422);
-        }
-
-        // Validate state
-        if ($state === '' || strlen($state) > 100) {
-            $this->json([
-                'success' => false,
-                'message' => 'Please enter a valid state.'
-            ], 422);
-        }
-
-        // Validate Indian PIN code
-        if (!preg_match('/^[0-9]{6}$/', $pincode)) {
-            $this->json([
-                'success' => false,
-                'message' => 'Please enter a valid 6-digit PIN code.'
-            ], 422);
-        }
-
-        $providerModel = new Provider();
-
-        // Prevent duplicate provider profiles
-        if ($providerModel->findByUserId($user['id'])) {
-            $this->json([
-                'success' => false,
-                'message' => 'You already have a provider profile.'
-            ], 409);
-        }
-
-        try {
-            $providerModel->create(
-                $user['id'],
-                $businessName,
-                $description,
-                $address,
-                $city,
-                $state,
-                $pincode
-            );
-
-            $this->json([
-                'success' => true,
-                'message' => 'Your provider profile has been created successfully.'
-            ]);
-
-        } catch (PDOException $e) {
-            error_log($e->getMessage());
-
-            $this->json([
-                'success' => false,
-                'message' => 'Unable to create your provider profile. Please try again.'
-            ], 500);
-        }
+public function becomeProviderSubmit()
+{
+    // Check login
+    if (empty($_SESSION['user_id'])) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please log in to continue.'
+        ], 401);
     }
 
+    // Verify CSRF token
+    if (!Csrf::verify($_POST['csrf_token'] ?? '')) {
+        $this->json([
+            'success' => false,
+            'message' => 'Invalid security token. Please refresh the page.'
+        ], 403);
+    }
+
+    // Get logged-in user
+    $userModel = new User();
+    $user = $userModel->findById($_SESSION['user_id']);
+
+    if (!$user || $user['status'] !== 'active') {
+        $this->json([
+            'success' => false,
+            'message' => 'Your account is not available.'
+        ], 403);
+    }
+
+    if ($user['role'] === 'admin') {
+        $this->json([
+            'success' => false,
+            'message' => 'Admin accounts cannot register as providers.'
+        ], 403);
+    }
+
+    // Get submitted form values
+    $businessName = trim($_POST['business_name'] ?? '');
+    $mainCategoryId = filter_var(
+        $_POST['main_category_id'] ?? null,
+        FILTER_VALIDATE_INT
+    );
+    $categoryId = filter_var(
+        $_POST['category_id'] ?? null,
+        FILTER_VALIDATE_INT
+    );
+
+    $description = trim($_POST['description'] ?? '');
+    $address = trim($_POST['address'] ?? '');
+    $city = trim($_POST['city'] ?? '');
+    $state = trim($_POST['state'] ?? '');
+    $pincode = trim($_POST['pincode'] ?? '');
+
+    // Validate business name
+    if ($businessName === '' || strlen($businessName) > 150) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please enter a valid business name.'
+        ], 422);
+    }
+
+    // Validate main category and subcategory IDs
+    if (
+        !$mainCategoryId ||
+        $mainCategoryId <= 0 ||
+        !$categoryId ||
+        $categoryId <= 0
+    ) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please select a valid main category and subcategory.'
+        ], 422);
+    }
+
+    // Verify that the selected subcategory belongs to the selected main category
+    $categoryModel = new Category();
+
+    if (!$categoryModel->subcategoryBelongsToParent(
+        $categoryId,
+        $mainCategoryId
+    )) {
+        $this->json([
+            'success' => false,
+            'message' => 'The selected subcategory does not belong to the selected main category.'
+        ], 422);
+    }
+
+    // Validate description
+    if (strlen($description) < 30 || strlen($description) > 2000) {
+        $this->json([
+            'success' => false,
+            'message' => 'Description must contain between 30 and 2000 characters.'
+        ], 422);
+    }
+
+    // Validate address
+    if ($address === '' || strlen($address) > 255) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please enter a valid business address.'
+        ], 422);
+    }
+
+    // Validate city
+    if ($city === '' || strlen($city) > 100) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please enter a valid city.'
+        ], 422);
+    }
+
+    // Validate state
+    if ($state === '' || strlen($state) > 100) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please enter a valid state.'
+        ], 422);
+    }
+
+    // Validate Indian PIN code
+    if (!preg_match('/^[0-9]{6}$/', $pincode)) {
+        $this->json([
+            'success' => false,
+            'message' => 'Please enter a valid 6-digit PIN code.'
+        ], 422);
+    }
+
+    $providerModel = new Provider();
+
+    // Prevent duplicate provider profiles
+    if ($providerModel->findByUserId($user['id'])) {
+        $this->json([
+            'success' => false,
+            'message' => 'You already have a provider profile.'
+        ], 409);
+    }
+
+    try {
+
+        // Create provider profile with selected subcategory
+        $providerModel->create(
+            $user['id'],
+            $categoryId,
+            $businessName,
+            $description,
+            $address,
+            $city,
+            $state,
+            $pincode
+        );
+
+        $this->json([
+            'success' => true,
+            'message' => 'Your provider profile has been created successfully.'
+        ]);
+
+    } catch (Throwable $e) {
+
+        error_log($e->getMessage());
+
+        $this->json([
+            'success' => false,
+            'message' => 'Unable to create your provider profile. Please try again.'
+        ], 500);
+    }
+}
 
     // Update customer profile information
     public function updateProfile()
@@ -464,6 +517,44 @@ public function providerSubcategories()
     ]);
 
     exit;
+}
+
+// Display reviews submitted by the logged-in customer
+public function myReviews()
+{
+    // Check login
+    if (empty($_SESSION['user_id'])) {
+        $this->redirect(APP_URL . '/login');
+    }
+
+    // Get logged-in user
+    $userModel = new User();
+
+    $user = $userModel->findById($_SESSION['user_id']);
+
+    // Check whether user exists and is active
+    if (!$user || $user['status'] !== 'active') {
+        $_SESSION = [];
+        session_destroy();
+
+        $this->redirect(APP_URL . '/login');
+    }
+
+    // Admin accounts cannot access the customer reviews page
+    if ($user['role'] === 'admin') {
+        $this->redirect(APP_URL . '/admin/dashboard');
+    }
+
+    // Retrieve reviews belonging to this customer
+    $reviewModel = new Review();
+
+    $reviews = $reviewModel->getByCustomerId($user['id']);
+
+    // Display customer reviews page
+    $this->view('dashboard.my-reviews', [
+        'user' => $user,
+        'reviews' => $reviews
+    ]);
 }
 
 }

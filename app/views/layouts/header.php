@@ -112,7 +112,6 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
 
                 </a>
 
-
                 <!-- Mobile Menu Button -->
                 <button
                     class="navbar-toggler"
@@ -126,7 +125,6 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
                     <span class="navbar-toggler-icon"></span>
 
                 </button>
-
 
                 <!-- Navigation -->
                 <div class="collapse navbar-collapse" id="mainNavbar">
@@ -165,13 +163,11 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
 
                     </ul>
 
-
                     <!-- HEADER ACTIONS -->
                     <div class="header-actions">
 
                         <?php if ($isLoggedIn): ?>
 
-                            <!-- LOGGED-IN USER PROFILE -->
                             <div class="dropdown">
 
                                 <button
@@ -190,7 +186,6 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
 
                                 </button>
 
-
                                 <ul class="dropdown-menu dropdown-menu-end user-profile-menu">
 
                                     <li class="dropdown-header">
@@ -203,60 +198,37 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
 
                                     </li>
 
-
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
 
-
-                                    <!-- MAIN DASHBOARD -->
                                     <li>
-
                                         <a class="dropdown-item" href="<?= $dashboardUrl ?>">
-
                                             <i class="bi bi-grid me-2"></i>
-
                                             My Dashboard
-
                                         </a>
-
                                     </li>
 
-
-                                    <!-- PROVIDER ACCOUNT OR REGISTRATION -->
                                     <?php if ($headerUserRole !== 'admin'): ?>
 
                                         <li>
-
                                             <a class="dropdown-item" href="<?= $providerAccountUrl ?>">
-
                                                 <i class="bi bi-briefcase me-2"></i>
-
                                                 <?= htmlspecialchars($providerAccountLabel, ENT_QUOTES, 'UTF-8') ?>
-
                                             </a>
-
                                         </li>
 
                                     <?php endif; ?>
 
-
                                     <li>
                                         <hr class="dropdown-divider">
                                     </li>
 
-
-                                    <!-- LOGOUT -->
                                     <li>
-
                                         <a class="dropdown-item logout-menu-item" href="<?= APP_URL ?>/logout">
-
                                             <i class="bi bi-box-arrow-right me-2"></i>
-
                                             Logout
-
                                         </a>
-
                                     </li>
 
                                 </ul>
@@ -265,17 +237,13 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
 
                         <?php else: ?>
 
-                            <!-- GUEST ACTIONS -->
                             <a href="<?= APP_URL ?>/login" class="login-link">
                                 Log In
                             </a>
 
                             <a href="<?= APP_URL ?>/register" class="btn btn-primary header-register-btn">
-
                                 Get Started
-
                                 <i class="bi bi-arrow-up-right ms-1"></i>
-
                             </a>
 
                         <?php endif; ?>
@@ -289,5 +257,8 @@ if ($isLoggedIn && $headerUserRole !== 'admin') {
         </nav>
 
     </header>
+
+    <!-- Page content is rendered after this file. -->
+
 </body>
 </html>

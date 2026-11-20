@@ -234,7 +234,7 @@ $providerState = htmlspecialchars(
 
             <div class="row g-4">
 
-                <!-- SERVICES -->
+                <!-- MY SERVICES -->
                 <div class="col-md-6">
 
                     <div class="dashboard-card activity-card">
@@ -246,7 +246,7 @@ $providerState = htmlspecialchars(
                             </span>
 
                             <span class="activity-coming-soon">
-                                Coming soon
+                                Manage Services
                             </span>
 
                         </div>
@@ -256,9 +256,17 @@ $providerState = htmlspecialchars(
                         </h3>
 
                         <p>
-                            Add, edit and manage the services
-                            your business offers to customers.
+                            Add new services, upload service images,
+                            edit existing listings and manage your services.
                         </p>
+
+                        <a
+                            href="<?= APP_URL ?>/provider/services"
+                            class="activity-explore-link"
+                        >
+                            Manage My Services
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
 
                     </div>
 
@@ -277,7 +285,7 @@ $providerState = htmlspecialchars(
                             </span>
 
                             <span class="activity-coming-soon">
-                                Coming soon
+                                Manage Bookings
                             </span>
 
                         </div>
@@ -287,9 +295,17 @@ $providerState = htmlspecialchars(
                         </h3>
 
                         <p>
-                            View booking requests and manage
-                            your upcoming customer appointments.
+                            View customer booking requests, check appointment
+                            details and manage your upcoming bookings.
                         </p>
+
+                        <a
+                            href="<?= APP_URL ?>/provider/bookings"
+                            class="activity-explore-link"
+                        >
+                            Manage Bookings
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
 
                     </div>
 
@@ -327,7 +343,7 @@ $providerState = htmlspecialchars(
                 </div>
 
 
-                <!-- REVIEWS -->
+                <!-- CUSTOMER REVIEWS -->
                 <div class="col-md-6">
 
                     <div class="dashboard-card activity-card">
@@ -339,7 +355,7 @@ $providerState = htmlspecialchars(
                             </span>
 
                             <span class="activity-coming-soon">
-                                Coming soon
+                                View Reviews
                             </span>
 
                         </div>
@@ -349,9 +365,18 @@ $providerState = htmlspecialchars(
                         </h3>
 
                         <p>
-                            Read customer feedback and build
-                            trust with your future customers.
+                            Read customer feedback, check your ratings
+                            and understand how customers experience
+                            your services.
                         </p>
+
+                        <a
+                            href="<?= APP_URL ?>/provider/reviews"
+                            class="activity-explore-link"
+                        >
+                            View Customer Reviews
+                            <i class="bi bi-arrow-up-right"></i>
+                        </a>
 
                     </div>
 

@@ -1,165 +1,169 @@
 
-$(document).ready(function () {
+document.addEventListener('DOMContentLoaded', function () {
 
     // =====================================
     // CUSTOMER REGISTRATION
     // =====================================
 
-    $('#registerForm').on('submit', function (event) {
+    const registerForm = document.getElementById('registerForm');
 
-        event.preventDefault();
+    if (registerForm) {
 
-        const form = $(this);
-        const submitButton = form.find('button[type="submit"]');
-        const messageBox = $('#authMessage');
+        registerForm.addEventListener('submit', async function (event) {
 
-        messageBox.removeClass('success error').hide().text('');
+            event.preventDefault();
 
-        submitButton.prop('disabled', true);
-        submitButton.html('Creating account...');
+            const submitButton = registerForm.querySelector(
+                'button[type="submit"]'
+            );
 
-        $.ajax({
+            const messageBox = document.getElementById('authMessage');
 
-            url: '/servora/public/register',
-            type: 'POST',
-            data: form.serialize(),
-            dataType: 'json',
+            const originalButtonText = submitButton.innerHTML;
 
-            success: function (response) {
+            messageBox.classList.remove('success', 'error');
+            messageBox.style.display = 'none';
+            messageBox.textContent = '';
 
-                if (response.success) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Creating account...';
 
-                    messageBox
-                        .removeClass('error')
-                        .addClass('success')
-                        .text(response.message)
-                        .show();
+            try {
 
-                    setTimeout(function () {
-                        window.location.href = response.redirect;
-                    }, 1500);
+                const response = await fetch('/servora/public/register', {
 
-                } else {
+                    method: 'POST',
 
-                    messageBox
-                        .removeClass('success')
-                        .addClass('error')
-                        .text(response.message)
-                        .show();
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
 
+                    body: new URLSearchParams(
+                        new FormData(registerForm)
+                    )
+
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message || 'Registration failed.'
+                    );
                 }
 
-            },
+                messageBox.classList.add('success');
+                messageBox.textContent = result.message;
+                messageBox.style.display = 'block';
 
-            error: function (xhr) {
+                setTimeout(function () {
 
-                let message = 'Something went wrong. Please try again.';
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    } else {
+                        window.location.href = '/servora/public/login';
+                    }
 
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    message = xhr.responseJSON.message;
-                }
+                }, 1500);
 
-                messageBox
-                    .removeClass('success')
-                    .addClass('error')
-                    .text(message)
-                    .show();
+            } catch (error) {
 
-            },
+                messageBox.classList.add('error');
+                messageBox.textContent = error.message;
+                messageBox.style.display = 'block';
 
-            complete: function () {
+            } finally {
 
-                submitButton.prop('disabled', false);
-
-                submitButton.html(
-                    'Create account <i class="bi bi-arrow-right"></i>'
-                );
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
 
             }
 
         });
 
-    });
+    }
 
 
     // =====================================
     // CUSTOMER LOGIN
     // =====================================
 
-    $('#loginForm').on('submit', function (event) {
+    const loginForm = document.getElementById('loginForm');
 
-        event.preventDefault();
+    if (loginForm) {
 
-        const form = $(this);
-        const submitButton = form.find('button[type="submit"]');
-        const messageBox = $('#authMessage');
+        loginForm.addEventListener('submit', async function (event) {
 
-        messageBox.removeClass('success error').hide().text('');
+            event.preventDefault();
 
-        submitButton.prop('disabled', true);
-        submitButton.html('Signing in...');
+            const submitButton = loginForm.querySelector(
+                'button[type="submit"]'
+            );
 
-        $.ajax({
+            const messageBox = document.getElementById('authMessage');
 
-            url: '/servora/public/login',
-            type: 'POST',
-            data: form.serialize(),
-            dataType: 'json',
+            const originalButtonText = submitButton.innerHTML;
 
-            success: function (response) {
+            messageBox.classList.remove('success', 'error');
+            messageBox.style.display = 'none';
+            messageBox.textContent = '';
 
-                if (response.success) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Signing in...';
 
-                    messageBox
-                        .removeClass('error')
-                        .addClass('success')
-                        .text(response.message)
-                        .show();
+            try {
 
-                    setTimeout(function () {
-                        window.location.href = response.redirect;
-                    }, 1000);
+                const response = await fetch('/servora/public/login', {
 
-                } else {
+                    method: 'POST',
 
-                    messageBox
-                        .removeClass('success')
-                        .addClass('error')
-                        .text(response.message)
-                        .show();
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
 
+                    body: new URLSearchParams(
+                        new FormData(loginForm)
+                    )
+
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || !result.success) {
+                    throw new Error(
+                        result.message || 'Login failed.'
+                    );
                 }
 
-            },
+                messageBox.classList.add('success');
+                messageBox.textContent = result.message;
+                messageBox.style.display = 'block';
 
-            error: function (xhr) {
+                setTimeout(function () {
 
-                let message = 'Something went wrong. Please try again.';
+                    if (result.redirect) {
+                        window.location.href = result.redirect;
+                    } else {
+                        window.location.href = '/servora/public/dashboard';
+                    }
 
-                if (xhr.responseJSON && xhr.responseJSON.message) {
-                    message = xhr.responseJSON.message;
-                }
+                }, 1000);
 
-                messageBox
-                    .removeClass('success')
-                    .addClass('error')
-                    .text(message)
-                    .show();
+            } catch (error) {
 
-            },
+                messageBox.classList.add('error');
+                messageBox.textContent = error.message;
+                messageBox.style.display = 'block';
 
-            complete: function () {
+            } finally {
 
-                submitButton.prop('disabled', false);
-
-                submitButton.html(
-                    'Sign in <i class="bi bi-arrow-right"></i>'
-                );
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
 
             }
 
         });
 
-    });
+    }
 
 });

@@ -23,6 +23,10 @@ $profileImageUrl = !empty($user['profile_image'])
     ? APP_URL . '/' . $user['profile_image']
     : null;
 
+// Customer bookings
+$bookings = $bookings ?? [];
+$bookingCount = count($bookings);
+
 include APP_ROOT . '/app/views/layouts/header.php';
 
 ?>
@@ -40,7 +44,10 @@ include APP_ROOT . '/app/views/layouts/header.php';
                     CUSTOMER DASHBOARD
                 </span>
 
-                <h1>Welcome, <span id="dashboardWelcomeName"><?= $customerName ?></span></h1>
+                <h1>
+                    Welcome,
+                    <span id="dashboardWelcomeName"><?= $customerName ?></span>
+                </h1>
 
                 <p>
                     Manage your account, discover professionals
@@ -139,7 +146,11 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                     </div>
 
-                    <div id="profilePhotoMessage" class="profile-form-message" role="alert"></div>
+                    <div
+                        id="profilePhotoMessage"
+                        class="profile-form-message"
+                        role="alert"
+                    ></div>
 
                     <div class="profile-divider"></div>
 
@@ -154,7 +165,9 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                             <div>
                                 <span>Full name</span>
-                                <strong id="profileInformationName"><?= $customerName ?></strong>
+                                <strong id="profileInformationName">
+                                    <?= $customerName ?>
+                                </strong>
                             </div>
 
                         </div>
@@ -167,7 +180,9 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                             <div>
                                 <span>Email address</span>
-                                <strong id="profileInformationEmail"><?= $customerEmail ?></strong>
+                                <strong id="profileInformationEmail">
+                                    <?= $customerEmail ?>
+                                </strong>
                             </div>
 
                         </div>
@@ -195,7 +210,9 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                             <div>
                                 <span>Your account role</span>
-                                <strong><?= htmlspecialchars($customerRole, ENT_QUOTES, 'UTF-8') ?></strong>
+                                <strong>
+                                    <?= htmlspecialchars($customerRole, ENT_QUOTES, 'UTF-8') ?>
+                                </strong>
                             </div>
 
                         </div>
@@ -221,109 +238,104 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                 <div class="dashboard-right-column">
 
-                    <!-- BECOME A PROVIDER -->
-                    
-<!-- PROVIDER CARD -->
-<div class="dashboard-card provider-card">
+                    <!-- PROVIDER CARD -->
+                    <div class="dashboard-card provider-card">
 
-    <div class="provider-card-content">
+                        <div class="provider-card-content">
 
-        <?php if (!empty($provider) && $provider['status'] === 'active'): ?>
+                            <?php if (!empty($provider) && $provider['status'] === 'active'): ?>
 
-            <span class="section-eyebrow provider-eyebrow">
-                <i class="bi bi-briefcase"></i>
-                YOUR BUSINESS
-            </span>
+                                <span class="section-eyebrow provider-eyebrow">
+                                    <i class="bi bi-briefcase"></i>
+                                    YOUR BUSINESS
+                                </span>
 
-            <h2>
-                Welcome to your provider workspace.
-            </h2>
+                                <h2>
+                                    Welcome to your provider workspace.
+                                </h2>
 
-            <p>
-                Your business
-                <strong>
-                    <?= htmlspecialchars($provider['business_name'], ENT_QUOTES, 'UTF-8') ?>
-                </strong>
-                is active on Servora. Manage your professional
-                presence and connect with customers.
-            </p>
+                                <p>
+                                    Your business
+                                    <strong>
+                                        <?= htmlspecialchars($provider['business_name'], ENT_QUOTES, 'UTF-8') ?>
+                                    </strong>
+                                    is active on Servora. Manage your professional
+                                    presence and connect with customers.
+                                </p>
 
-            <div class="provider-card-bottom">
+                                <div class="provider-card-bottom">
 
-                <a
-                    href="<?= APP_URL ?>/provider/dashboard"
-                    class="btn btn-primary"
-                >
-                    Manage Provider Dashboard
-                    <i class="bi bi-arrow-up-right ms-2"></i>
-                </a>
+                                    <a
+                                        href="<?= APP_URL ?>/provider/dashboard"
+                                        class="btn btn-primary"
+                                    >
+                                        Manage Provider Dashboard
+                                        <i class="bi bi-arrow-up-right ms-2"></i>
+                                    </a>
 
-            </div>
+                                </div>
 
-        <?php elseif (!empty($provider) && $provider['status'] === 'suspended'): ?>
+                            <?php elseif (!empty($provider) && $provider['status'] === 'suspended'): ?>
 
-            <span class="section-eyebrow provider-eyebrow">
-                <i class="bi bi-exclamation-circle"></i>
-                PROVIDER ACCOUNT
-            </span>
+                                <span class="section-eyebrow provider-eyebrow">
+                                    <i class="bi bi-exclamation-circle"></i>
+                                    PROVIDER ACCOUNT
+                                </span>
 
-            <h2>Your provider account is suspended.</h2>
+                                <h2>Your provider account is suspended.</h2>
 
-            <p>
-                Your provider profile is currently unavailable.
-                Please contact Servora support for assistance.
-            </p>
+                                <p>
+                                    Your provider profile is currently unavailable.
+                                    Please contact Servora support for assistance.
+                                </p>
 
-        <?php else: ?>
+                            <?php else: ?>
 
-            <span class="section-eyebrow provider-eyebrow">
-                <i class="bi bi-briefcase"></i>
-                FOR PROFESSIONALS
-            </span>
+                                <span class="section-eyebrow provider-eyebrow">
+                                    <i class="bi bi-briefcase"></i>
+                                    FOR PROFESSIONALS
+                                </span>
 
-            <h2>
-                Turn your skills into opportunities.
-            </h2>
+                                <h2>
+                                    Turn your skills into opportunities.
+                                </h2>
 
-            <p>
-                Build your presence on Servora and connect with
-                customers looking for your services.
-            </p>
+                                <p>
+                                    Build your presence on Servora and connect with
+                                    customers looking for your services.
+                                </p>
 
-            <div class="provider-card-bottom">
+                                <div class="provider-card-bottom">
 
-                <a
-                    href="<?= APP_URL ?>/dashboard/become-provider"
-                    class="btn btn-primary"
-                >
-                    Become a Provider
-                    <i class="bi bi-arrow-up-right ms-2"></i>
-                </a>
+                                    <a
+                                        href="<?= APP_URL ?>/dashboard/become-provider"
+                                        class="btn btn-primary"
+                                    >
+                                        Become a Provider
+                                        <i class="bi bi-arrow-up-right ms-2"></i>
+                                    </a>
 
-            </div>
+                                </div>
 
-        <?php endif; ?>
+                            <?php endif; ?>
 
-    </div>
+                        </div>
 
-    <div class="provider-card-art">
+                        <div class="provider-card-art">
 
-        <div class="provider-art-circle">
-            <i class="bi bi-shop-window"></i>
-        </div>
+                            <div class="provider-art-circle">
+                                <i class="bi bi-shop-window"></i>
+                            </div>
 
-        <span class="provider-art-star star-one">
-            <i class="bi bi-stars"></i>
-        </span>
+                            <span class="provider-art-star star-one">
+                                <i class="bi bi-stars"></i>
+                            </span>
 
-        <span class="provider-art-star star-two">
-            <i class="bi bi-plus-circle-fill"></i>
-        </span>
+                            <span class="provider-art-star star-two">
+                                <i class="bi bi-plus-circle-fill"></i>
+                            </span>
 
-    </div>
-
-</div>
-
+                        </div>
 
                     </div>
 
@@ -337,7 +349,7 @@ include APP_ROOT . '/app/views/layouts/header.php';
                                     SPREAD THE WORD
                                 </span>
 
-                                <h2>Invite friends & unlock perks</h2>
+                                <h2>Invite friends &amp; unlock perks</h2>
                             </div>
 
                             <span class="card-heading-icon referral-heading-icon">
@@ -424,6 +436,7 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
             <div class="row g-4">
 
+                <!-- POSTED REQUIREMENTS -->
                 <div class="col-md-6">
 
                     <div class="dashboard-card activity-card">
@@ -448,29 +461,44 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                 </div>
 
+                <!-- MY SERVICE REQUESTS -->
                 <div class="col-md-6">
 
-                    <div class="dashboard-card activity-card">
+                    <a
+                        href="#myServiceRequests"
+                        class="dashboard-card activity-card"
+                        style="display:block; text-decoration:none; color:inherit;"
+                    >
 
                         <div class="activity-card-top">
+
                             <span class="activity-icon activity-orange">
                                 <i class="bi bi-calendar-check"></i>
                             </span>
 
-                            <span class="activity-coming-soon">Coming soon</span>
+                            <span class="activity-coming-soon">
+                                <?= $bookingCount ?> bookings
+                            </span>
+
                         </div>
 
                         <h3>My service requests</h3>
 
                         <p>
-                            Your bookings, callback requests and
-                            service enquiries will be organised here.
+                            View your bookings, check appointment details
+                            and track the latest status of your requests.
                         </p>
 
-                    </div>
+                        <span style="color:var(--primary); font-weight:600;">
+                            View my bookings
+                            <i class="bi bi-arrow-right ms-1"></i>
+                        </span>
+
+                    </a>
 
                 </div>
 
+                <!-- FAVOURITE PROVIDERS -->
                 <div class="col-md-6">
 
                     <div class="dashboard-card activity-card">
@@ -494,28 +522,251 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
                 </div>
 
-                <div class="col-md-6">
+               <!-- MY REVIEWS -->
+<div class="col-md-6">
 
-                    <div class="dashboard-card activity-card">
+    <a
+        href="<?= APP_URL ?>/dashboard/my-reviews"
+        class="dashboard-card activity-card"
+        style="display:block; text-decoration:none; color:inherit;"
+    >
 
-                        <div class="activity-card-top">
-                            <span class="activity-icon activity-green">
-                                <i class="bi bi-star"></i>
-                            </span>
+        <div class="activity-card-top">
 
-                            <span class="activity-coming-soon">Coming soon</span>
-                        </div>
+            <span class="activity-icon activity-green">
+                <i class="bi bi-star"></i>
+            </span>
 
-                        <h3>My reviews</h3>
+            <span class="activity-coming-soon">
+                View reviews
+            </span>
 
+        </div>
+
+        <h3>My reviews</h3>
+
+        <p>
+            View all the ratings and reviews you've shared
+            about your completed services.
+        </p>
+
+        <span style="color:var(--primary); font-weight:600;">
+            View my reviews
+            <i class="bi bi-arrow-right ms-1"></i>
+        </span>
+
+    </a>
+
+</div>
+
+            </div>
+
+            <!-- MY SERVICE REQUESTS LIST -->
+            <div id="myServiceRequests" style="margin-top:45px;">
+
+                <div class="activity-section-heading">
+
+                    <div>
+                        <span class="section-eyebrow">BOOKING MANAGEMENT</span>
+                        <h2>My service requests</h2>
                         <p>
-                            Share your experience and help other
-                            customers choose trusted professionals.
+                            Track your appointments and booking updates.
                         </p>
+                    </div>
+
+                    <span class="activity-explore-link">
+                        <?= $bookingCount ?> total bookings
+                    </span>
+
+                </div>
+
+                <?php if (!empty($bookings)): ?>
+
+                    <div class="row g-4">
+
+                        <?php foreach ($bookings as $booking): ?>
+
+                            <?php
+
+                            $serviceTitle = htmlspecialchars(
+                                $booking['service_title'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+
+                            $businessName = htmlspecialchars(
+                                $booking['business_name'] ?: $booking['provider_name'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+
+                            $bookingNumber = htmlspecialchars(
+                                $booking['booking_number'],
+                                ENT_QUOTES,
+                                'UTF-8'
+                            );
+
+                            $bookingStatus = $booking['status'];
+
+                            $statusClass = match ($bookingStatus) {
+                                'pending' => 'warning',
+                                'accepted' => 'success',
+                                'in_progress' => 'primary',
+                                'completed' => 'success',
+                                'rejected' => 'danger',
+                                'cancelled' => 'secondary',
+                                default => 'secondary'
+                            };
+
+                            $serviceImage = !empty($booking['service_image'])
+                                ? APP_URL . '/' . $booking['service_image']
+                                : null;
+
+                            ?>
+
+                            <div class="col-lg-6">
+
+                                <div class="dashboard-card" style="height:100%;">
+
+                                    <!-- SERVICE INFORMATION -->
+                                    <div style="display:flex; gap:15px; align-items:center; margin-bottom:20px;">
+
+                                        <?php if ($serviceImage): ?>
+
+                                            <img
+                                                src="<?= htmlspecialchars($serviceImage, ENT_QUOTES, 'UTF-8') ?>"
+                                                alt="<?= $serviceTitle ?>"
+                                                style="width:85px; height:75px; object-fit:cover; border-radius:12px;"
+                                            >
+
+                                        <?php else: ?>
+
+                                            <div style="width:85px; height:75px; border-radius:12px; background:var(--light); display:flex; align-items:center; justify-content:center;">
+                                                <i class="bi bi-tools" style="font-size:28px; color:var(--primary);"></i>
+                                            </div>
+
+                                        <?php endif; ?>
+
+                                        <div>
+
+                                            <h3 style="font-size:18px; margin-bottom:5px;">
+                                                <?= $serviceTitle ?>
+                                            </h3>
+
+                                            <p style="margin:0; color:var(--text);">
+                                                <?= $businessName ?>
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                    <div style="border-top:1px solid var(--border); padding-top:15px;">
+
+                                        <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:12px;">
+
+                                            <span style="color:var(--text);">
+                                                Booking number
+                                            </span>
+
+                                            <strong>
+                                                #<?= $bookingNumber ?>
+                                            </strong>
+
+                                        </div>
+
+                                        <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:12px;">
+
+                                            <span style="color:var(--text);">
+                                                Appointment
+                                            </span>
+
+                                            <strong>
+                                                <?= htmlspecialchars(date('d M Y', strtotime($booking['booking_date'])), ENT_QUOTES, 'UTF-8') ?>
+                                            </strong>
+
+                                        </div>
+
+                                        <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:12px;">
+
+                                            <span style="color:var(--text);">
+                                                Time
+                                            </span>
+
+                                            <strong>
+                                                <?= htmlspecialchars(date('h:i A', strtotime($booking['booking_time'])), ENT_QUOTES, 'UTF-8') ?>
+                                            </strong>
+
+                                        </div>
+
+                                        <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:15px;">
+
+                                            <span style="color:var(--text);">
+                                                Amount
+                                            </span>
+
+                                            <strong>
+                                                ₹<?= number_format((float)$booking['price'], 2) ?>
+                                            </strong>
+
+                                        </div>
+
+                                        <div style="display:flex; justify-content:space-between; align-items:center; gap:10px;">
+
+                                            <span class="badge text-bg-<?= $statusClass ?>" style="padding:8px 12px;">
+                                                <?= htmlspecialchars(ucwords(str_replace('_', ' ', $bookingStatus)), ENT_QUOTES, 'UTF-8') ?>
+                                            </span>
+
+                                            <a
+                                                href="<?= APP_URL ?>/booking/details?number=<?= urlencode($booking['booking_number']) ?>"
+                                                class="btn btn-primary btn-sm"
+                                            >
+                                                View Details
+                                                <i class="bi bi-arrow-right ms-1"></i>
+                                            </a>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        <?php endforeach; ?>
 
                     </div>
 
-                </div>
+                <?php else: ?>
+
+                    <!-- EMPTY BOOKINGS STATE -->
+                    <div class="dashboard-card" style="text-align:center; padding:45px 20px;">
+
+                        <div style="font-size:45px; color:var(--primary); margin-bottom:15px;">
+                            <i class="bi bi-calendar2-x"></i>
+                        </div>
+
+                        <h3 style="font-size:21px; margin-bottom:10px;">
+                            No service requests yet
+                        </h3>
+
+                        <p style="color:var(--text); max-width:450px; margin:0 auto 20px;">
+                            You haven't booked any services yet.
+                            Explore Servora and find professionals
+                            who can help you.
+                        </p>
+
+                        <a
+                            href="<?= APP_URL ?>/services"
+                            class="btn btn-primary"
+                        >
+                            Explore Services
+                            <i class="bi bi-arrow-right ms-2"></i>
+                        </a>
+
+                    </div>
+
+                <?php endif; ?>
 
             </div>
 
@@ -527,7 +778,12 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
 
 <!-- EDIT PROFILE MODAL -->
-<div class="modal fade" id="editProfileModal" tabindex="-1" aria-hidden="true">
+<div
+    class="modal fade"
+    id="editProfileModal"
+    tabindex="-1"
+    aria-hidden="true"
+>
 
     <div class="modal-dialog modal-dialog-centered">
 
@@ -541,17 +797,29 @@ include APP_ROOT . '/app/views/layouts/header.php';
                     <p>Keep your personal information up to date.</p>
                 </div>
 
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                ></button>
 
             </div>
 
             <div class="modal-body">
 
-                <div id="profileUpdateMessage" class="profile-form-message" role="alert"></div>
+                <div
+                    id="profileUpdateMessage"
+                    class="profile-form-message"
+                    role="alert"
+                ></div>
 
                 <form id="editProfileForm">
 
-                    <input type="hidden" name="csrf_token" value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>"
+                    >
 
                     <div class="mb-3">
 
@@ -617,7 +885,11 @@ include APP_ROOT . '/app/views/layouts/header.php';
                             Cancel
                         </button>
 
-                        <button type="submit" class="btn btn-primary" id="saveProfileButton">
+                        <button
+                            type="submit"
+                            class="btn btn-primary"
+                            id="saveProfileButton"
+                        >
                             <i class="bi bi-check2 me-1"></i>
                             Save Changes
                         </button>
@@ -639,13 +911,22 @@ include APP_ROOT . '/app/views/layouts/header.php';
 
 document.addEventListener('DOMContentLoaded', function () {
 
-    // Display success or error messages
+    // =====================================
+    // DISPLAY SUCCESS OR ERROR MESSAGES
+    // =====================================
+
     function showMessage(element, message, success) {
+
+        if (!element) {
+            return;
+        }
+
         element.className = 'profile-form-message ' +
             (success ? 'success' : 'error');
 
         element.textContent = message;
         element.style.display = 'block';
+
     }
 
 
@@ -679,9 +960,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     '<?= APP_URL ?>/dashboard/profile/update',
                     {
                         method: 'POST',
+
                         headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded'
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                            'Accept': 'application/json'
                         },
+
                         body: formData
                     }
                 );
@@ -689,9 +973,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await response.json();
 
                 if (!response.ok || !result.success) {
+
                     throw new Error(
                         result.message || 'Unable to update profile.'
                     );
+
                 }
 
                 const name = result.user.name;
@@ -699,43 +985,54 @@ document.addEventListener('DOMContentLoaded', function () {
                 const phone = result.user.phone || 'Not added yet';
                 const initial = name.charAt(0).toUpperCase();
 
+                // Update profile identity
                 document.getElementById('profileDisplayName').textContent = name;
                 document.getElementById('profileDisplayEmail').textContent = email;
 
+                // Update profile information
                 document.getElementById('profileInformationName').textContent = name;
                 document.getElementById('profileInformationEmail').textContent = email;
                 document.getElementById('profileInformationPhone').textContent = phone;
 
+                // Update dashboard welcome heading
                 document.getElementById('dashboardWelcomeName').textContent = name;
 
+                // Update profile initial
                 const initialElement = document.getElementById('dashboardProfileInitial');
 
                 if (initialElement) {
                     initialElement.textContent = initial;
                 }
 
+                // Update header profile names
                 document.querySelectorAll('.user-profile-name').forEach(function (element) {
                     element.textContent = name;
                 });
 
+                // Update header profile avatars
                 document.querySelectorAll('.user-profile-avatar').forEach(function (element) {
+
                     if (element.tagName !== 'IMG') {
                         element.textContent = initial;
                     }
+
                 });
 
                 showMessage(message, result.message, true);
 
+                // Close modal after successful update
                 setTimeout(function () {
 
                     const modalElement = document.getElementById('editProfileModal');
 
                     if (window.bootstrap) {
+
                         const modal = bootstrap.Modal.getInstance(modalElement);
 
                         if (modal) {
                             modal.hide();
                         }
+
                     }
 
                     message.style.display = 'none';
@@ -782,6 +1079,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 'image/webp'
             ];
 
+            // Validate image format
             if (!allowedTypes.includes(file.type)) {
 
                 showMessage(
@@ -795,6 +1093,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             }
 
+            // Validate image size
             if (file.size > 2 * 1024 * 1024) {
 
                 showMessage(
@@ -817,7 +1116,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 '<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>'
             );
 
-            showMessage(message, 'Uploading your photo...', true);
+            showMessage(
+                message,
+                'Uploading your photo...',
+                true
+            );
 
             try {
 
@@ -825,6 +1128,11 @@ document.addEventListener('DOMContentLoaded', function () {
                     '<?= APP_URL ?>/dashboard/profile/upload-image',
                     {
                         method: 'POST',
+
+                        headers: {
+                            'Accept': 'application/json'
+                        },
+
                         body: formData
                     }
                 );
@@ -832,11 +1140,14 @@ document.addEventListener('DOMContentLoaded', function () {
                 const result = await response.json();
 
                 if (!response.ok || !result.success) {
+
                     throw new Error(
                         result.message || 'Photo upload failed.'
                     );
+
                 }
 
+                // Update profile image
                 const image = document.getElementById('dashboardProfileImage');
                 const initial = document.getElementById('dashboardProfileInitial');
 
@@ -847,11 +1158,19 @@ document.addEventListener('DOMContentLoaded', function () {
                     initial.style.display = 'none';
                 }
 
-                showMessage(message, result.message, true);
+                showMessage(
+                    message,
+                    result.message,
+                    true
+                );
 
             } catch (error) {
 
-                showMessage(message, error.message, false);
+                showMessage(
+                    message,
+                    error.message,
+                    false
+                );
 
             } finally {
 
@@ -863,12 +1182,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     }
 
-
-    // =====================================
-    // BECOME A PROVIDER
-    // =====================================
-
-
+});
 
 </script>
 
